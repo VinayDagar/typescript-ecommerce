@@ -10,7 +10,6 @@ export default {
         type: Number,
         required: true,
         min: [10, "Number must be 10 digit"],
-        max: [10, "Number must be 10 digit"]
     },
     email: {
         type: String,
@@ -23,8 +22,12 @@ export default {
     },
     salt: {
         type: String,
-        required: true,
         default: ''
+    },
+    role: {
+        type: globalAny.ObjectId,
+        ref: "Role",
+        requried: true,
     },
     customer: {
         type: globalAny.ObjectId,

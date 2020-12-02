@@ -2,19 +2,19 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const globalAny: any = global
 
 import express, { Application, NextFunction, Request, Response } from "express";
-import { Error } from "mongoose";
 
 const app: Application = express();
 globalAny.App = app
 
 import configHolder from "./config/dependency-include";
-globalAny.configHolder = configHolder;
+globalAny.configHolder = configHolder
+
 import * as init from "./config/init"
 init.init();
 
-import commonRoute from "./config/router/common"
+import commonRoute from "./config/router/common";
 
-app.use('/api/v1/common', commonRoute)
+app.use('/api/v1/common', commonRoute);
 
 app.get('/', (req, res) => res.status(200).send('Server is running'));
 
@@ -29,7 +29,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
     const status = error.statusCode || 500;
     const message = error.message || 'Something went wrong';
 
-    // error = views.ErrorView({ status, message })
-    error = { status, message }
+    error = globalAny.views.ErrorView({ status, message })
+    // error = { status, message }
     return res.status(error.status).json(error)
 })

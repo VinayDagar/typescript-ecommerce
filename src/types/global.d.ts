@@ -9,7 +9,12 @@ declare global {
             configHolder: object;
             domain: object;
             MongooseSchema: any;
-            App: Application
+            App: Application;
+            views: object;
+            module: NodeModule;
+            Joi: any;
+            Validation: any;
+            middleware: object;
         }
     }
 }

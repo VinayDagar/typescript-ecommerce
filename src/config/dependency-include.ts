@@ -12,12 +12,30 @@ globalAny.MongooseConnect = connection;
 globalAny.MongooseSchema = mongoose.Schema;
 globalAny.ObjectId = mongoose.Schema.Types.ObjectId;
 
-import requireUtility from "../utilities/require-utility";
-import domain from "../app/models";
 
-globalAny.domain = domain;
-const configHolder = {
-    requireUtility,
+import Views from "../app/views";
+globalAny.views = Views;
+
+import requireDirectory from "../utilities/require-directory";
+import encryptUtility from "../utilities/encryption-utility";
+import jwtUtility from "../utilities/jwt-utility";
+
+globalAny.configHolder = {
+    requireDirectory,
+    encryptUtility,
+    jwtUtility
 }
 
-export default configHolder
+import domain from "../app/models";
+globalAny.domain = domain;
+
+import Joi from "joi";
+globalAny.Joi = Joi;
+
+import Validate from "express-validator";
+globalAny.Validation = Validate;
+
+import middleware from "../middleware";
+globalAny.middleware = middleware;
+
+export default globalAny.configHolder;
