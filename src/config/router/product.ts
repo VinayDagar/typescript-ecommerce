@@ -1,5 +1,5 @@
 import express from "express";
-import { createProduct, updateProduct, deleteProduct } from "../../app/controllers/product";
+import { createProduct, updateProduct, deleteProduct, getProductDetails } from "../../app/controllers/product";
 import validationSchema from "../../validation";
 import { validate } from "express-validation";
 
@@ -23,6 +23,10 @@ router.post("/create-product",
         globalAny.middleware.authentication,
         globalAny.middleware.access.canAccess(["shopAdmin", "admin"]),
         deleteProduct
+    )
+    .get("/detail-product/:productId",
+        globalAny.middleware.access.canAccess(["anonymous"]),
+        getProductDetails
     )
 
 

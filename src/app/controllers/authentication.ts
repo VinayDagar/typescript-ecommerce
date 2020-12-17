@@ -86,6 +86,14 @@ const loginController = async (req: Request, res: Response, next: NextFunction) 
     }
 }
 
+/**
+ * 
+ * @param user      user who is trying to login  
+ * @param password  entered password by user
+ * 
+ * @description     Tries to match the entered password with user existing password, by creating hash of entered password,
+ *                  if both password matches, then return true else fale.  
+ */
 const checkIfPasswordValid = (user: any, password: string) => {
     try {
         const hash = globalAny.configHolder.encryptUtility.createHash(password, user.salt);
@@ -96,6 +104,15 @@ const checkIfPasswordValid = (user: any, password: string) => {
     }
 }
 
+/**
+ * 
+ * @param user              User which is trying to login  
+ * @param { Object } res    Response object, used in order to send response
+ * @param callback          next funcion to throw errors in case any
+ * 
+ * @description     Tries to generate JWT token using global utility createToken function of globally defined jwtUtility 
+ *                  and fetch the complete user and send token and user in response.  
+ */
 const createTokenAndReturn = async (user: any, res: Response, callback: NextFunction) => {
     try {
         const payload: object = {
