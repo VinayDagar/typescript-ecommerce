@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { nextTick } from "process";
 const globalAny: any = global;
 
 const signupController = async (req: Request, res: Response, next: NextFunction) => {
@@ -9,21 +8,27 @@ const signupController = async (req: Request, res: Response, next: NextFunction)
 
         if (!email || !phone) {
             const error: any = new Error("Invalid body!");
-            error.statusCode = 401;
+            error.statusCode = 400;
 
             return next(error);
         }
 
-        const previousUser: object = await globalAny.domain.User.findOne({ email, phone })
-
-        const userRole: any = await globalAny.domain.Role.findOne({value: role});
-
-        if(!userRole) {
-            const error: any = new Error("Role does not exist!");
-            error.statusCode = 403;
+        if (phone.length != 10) {
+            const error: any = new Error("Phone number must be 10 digit!");
+            error.statusCode = 400;
 
             return next(error);
         }
+
+        const previousUser: object = await globalAny.domain.User.findOne({
+            $or: [
+                {
+                    email,
+                }, {
+                    phone
+                }
+            ]
+        });
 
         if (previousUser) {
             const error: any = new Error("User already exist!");
@@ -34,7 +39,7 @@ const signupController = async (req: Request, res: Response, next: NextFunction)
 
         await new globalAny.domain.User({
             ...req.body,
-            role: userRole._id
+            role,
         }).save();
 
         const response: any = globalAny.views.JsonView({ message: "User successfully registered!" })
@@ -56,7 +61,7 @@ const loginController = async (req: Request, res: Response, next: NextFunction) 
             return next(error);
         }
 
-        let user: object = await globalAny.domain.User.findOne({ email }).select('password salt _id' );
+        let user: object = await globalAny.domain.User.findOne({ email }).select('password salt _id');
 
         if (!user) {
             const error: any = new Error("User does not exist!");
@@ -67,7 +72,7 @@ const loginController = async (req: Request, res: Response, next: NextFunction) 
 
         const isValid = checkIfPasswordValid(user, password);
 
-        if(!isValid) {
+        if (!isValid) {
             const err: any = new Error("Email or Password does not match!");
             err.statusCode = 500;
 
@@ -102,9 +107,25 @@ const createTokenAndReturn = async (user: any, res: Response, callback: NextFunc
         }
         const token: string = globalAny.configHolder.jwtUtility.createToken(payload);
 
-        user = await globalAny.domain.User.findOne({ _id: user._id }).select('password salt _id' );
+        user = await globalAny.domain.User.findOne({ _id: user._id })
+            .select('-password -salt -__v')
+            .populate({
+                path: "customer",
+                select: {
+                    __v: 0
+                },
+                populate: {
+                    path: "cart",
+                    select: {
+                        __v: 0
+                    }
+                }
+            })
+            .populate({
+                path: "wishlist"
+            });
 
-        const response: object = globalAny.views.JsonView({user, token});
+        const response: object = globalAny.views.JsonView({ user, token });
 
         return res.status(200).json(response);
     } catch (err) {

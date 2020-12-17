@@ -13,5 +13,9 @@ export default {
     products: [{
         type: globalAny.ObjectId,
         ref: "Product"
-    }]
+    }],
+    user: {
+        type: globalAny.ObjectId,
+        ref: "User"    
+    }
 }

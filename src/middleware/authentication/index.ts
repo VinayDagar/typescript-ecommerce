@@ -9,7 +9,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         if (!token) {
             const err: any = new Error('Unauthorized. Token not found!');
             err.statusCode = 401
-            next(err)
+            return next(err)
         }
 
         token = token.split(' ')[1];
@@ -17,7 +17,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         if (!token) {
             const err: any = new Error('ACCESS-TOKEN is not formated properly!');
             err.statusCode = 401
-            next(err)
+            return next(err)
         }
 
         const { userId, type } = globalAny.configHolder.jwtUtility.verifyToken(token, process.env.APP_SECRET_KEY)
@@ -25,7 +25,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         if (!userId) {
             const err: any = new Error('Unauthorized.');
             err.statusCode = 401
-            next(err)
+            return next(err)
         }
 
         const user = await globalAny.domain.User.findOne({
@@ -35,20 +35,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         if (!user) {
             const error: any = new Error('Unauthorised. user not found!')
             error.statusCode = 401
-            next(error);
+            return next(error);
         }
-
-        const role = await globalAny.domain.Role.findOne({
-            _id: user.role
-        })
-
-        if (!role) {
-            const error: any = new Error('User role not found!')
-            error.statusCode = 401
-            next(error);
-        }
-
-        user.role = role;
 
         // @ts-ignore
         req.loggedInUser = user

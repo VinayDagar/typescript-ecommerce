@@ -8,7 +8,8 @@
     "tsc": "tsc",
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "migrate": "set NODE_ENV=development&& node ./dist/migration"
   },
   "author": "Vinay Dagar",
   "license": "ISC",

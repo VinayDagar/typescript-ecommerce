@@ -16,7 +16,7 @@ export default (function () {
                     return next(err)
                 }
 
-                if (!access.includes(role.value)) {
+                if (!access.includes(role)) {
                     const err: any = new Error('Permission denied. Forbidden!')
                     err.statusCode = 403
                     return next(err)

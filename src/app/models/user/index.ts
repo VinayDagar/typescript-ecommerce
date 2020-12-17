@@ -1,6 +1,6 @@
-import { Module } from "module";
 import fields from "./fields";
 import beforeSave from "./hooks/before-save";
+import afterSave from "./hooks/after-save";
 
 const globalAny: any = global
 
@@ -9,6 +9,7 @@ const UserModel = new globalAny.MongooseSchema(fields, {
 })
 
 UserModel.pre("save", beforeSave);
+UserModel.post("save", afterSave);
 
 // Defining class methods for user model.
 Object.assign(UserModel.methods, globalAny.configHolder.requireDirectory(module, "class-methods"))

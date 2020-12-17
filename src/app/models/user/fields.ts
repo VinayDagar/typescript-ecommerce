@@ -7,9 +7,9 @@ export default {
         trim: true
     },
     phone: {
-        type: Number,
+        type: String,
         required: true,
-        min: [10, "Number must be 10 digit"],
+        min: 10,
     },
     email: {
         type: String,
@@ -18,16 +18,17 @@ export default {
     password: {
         type: String,
         required: [true, "Password is required!"],
-        min: [6, "Password must be atleast 6 character long!"]
+        min: 6
     },
     salt: {
         type: String,
         default: ''
     },
     role: {
-        type: globalAny.ObjectId,
-        ref: "Role",
+        type: String,
+        enum: ["admin", "shopAdmin", "customer"],
         requried: true,
+        default: "customer"
     },
     customer: {
         type: globalAny.ObjectId,
