@@ -26,7 +26,7 @@ const createProduct = async (req: any, res: Response, next: NextFunction) => {
             creator: shop._id
         }).save();
 
-        const response: object = globalAny.views.JsonView({ message: "Product sucessfully created!" });
+        const response: Object = globalAny.views.JsonView({ message: "Product sucessfully created!" });
         return res.status(201).json(response);
     } catch (err: any) {
         next(err);
@@ -54,7 +54,7 @@ const updateProduct = async (req: any, res: Response, next: NextFunction) => {
             isInStock: parseInt(quantity) > 0 ? true : false
         });
 
-        const response: object = globalAny.views.JsonView({ message: `Product ${title} sucessfully updated!` });
+        const response: Object = globalAny.views.JsonView({ message: `Product ${title} sucessfully updated!` });
         return res.status(200).json(response);
 
     } catch (err: any) {
@@ -70,7 +70,7 @@ const deleteProduct = async (req: any, res: Response, next: NextFunction) => {
             _id: req.params.productId
         });
 
-        const response: object = globalAny.views.JsonView({ message: `Product sucessfully deleted!` });
+        const response: Object = globalAny.views.JsonView({ message: `Product sucessfully deleted!` });
         return res.status(200).json(response);
 
     } catch (err: any) {
@@ -96,13 +96,37 @@ const getProductDetails = async (req: any, res: Response, next: NextFunction) =>
             }
         });
 
-        if(!product) {
+        if (!product) {
             const error: any = new Error("Product not found!");
             error.statusCode = 404;
             return next(error);
         }
 
-        const response: object = globalAny.views.JsonView({ message: "success", product });
+        const response: Object = globalAny.views.JsonView({ message: "success", product });
+        return res.status(200).json(response);
+
+    } catch (err: any) {
+        next(err)
+    }
+}
+
+const getProductsList = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        let query: any = req.query;
+
+        const products = await globalAny.domain.Product.find({}, "-__v", {
+            limit: parseInt(query.limit),
+            skip: parseInt(query.skip)
+        }).populate({
+            path: "creator",
+            select: {
+                __v: 0,
+                products: 0
+            }
+        });
+
+        const response: Object = globalAny.views.JsonView({message: "success", products})
+
         return res.status(200).json(response);
 
     } catch (err: any) {
@@ -140,4 +164,5 @@ export {
     updateProduct,
     deleteProduct,
     getProductDetails,
+    getProductsList,
 }
