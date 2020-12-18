@@ -13,11 +13,13 @@ globalAny.configHolder = configHolder
 import * as init from "./config/init"
 init.init();
 
-import commonRoute from "./config/router/common";
-import productsRoute from "./config/router/product";
+import commonRoutes from "./config/router/common";
+import productRoutes from "./config/router/product";
+import cartRoutes from "./config/router/cart";
 
-app.use('/api/v1/common', commonRoute);
-app.use('/api/v1/product', productsRoute);
+app.use('/api/v1/common', commonRoutes);
+app.use('/api/v1/product', productRoutes);
+app.use('/api/v1/cart', cartRoutes);
 
 app.get('/', (req, res) => res.status(200).send('Server is running'));
 

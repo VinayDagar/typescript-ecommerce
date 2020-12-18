@@ -16,5 +16,9 @@ export default {
     customer: {
         type: globalAny.ObjectId,
         ref: "Customer",
+    },
+    totalPrice: {
+        type: Number,
+        default: 0
     }
 }

@@ -3,6 +3,7 @@ import Customer from "./customer";
 import Product from "./product";
 import Shop from "./shop";
 import Cart from "./cart";
+import CartProduct from "./cart-product";
 import Wishlist from "./wishlist";
 
 export default {
@@ -11,5 +12,6 @@ export default {
     Product,
     Shop,
     Cart,
+    CartProduct,
     Wishlist,
 }
