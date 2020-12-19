@@ -5,7 +5,7 @@ import afterSave from "./hooks/after-save";
 const globalAny: any = global
 
 const UserModel = new globalAny.MongooseSchema(fields, {
-    timestamp: true
+    timestamps: true
 })
 
 UserModel.pre("save", beforeSave);

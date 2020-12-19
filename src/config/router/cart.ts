@@ -1,11 +1,8 @@
 import express from "express";
-import { addToCart } from "../../app/controllers/cart"
-// import validationSchema from "../../validation";
-// import { validate } from "express-validation";
+import { addToCart, removeItemFromCart, clearCart } from "../../app/controllers/cart"
 
 const router = express.Router();
 const globalAny: any = global;
-
 
 router
     .post("/add-to-cart/:productId",
@@ -13,7 +10,16 @@ router
         globalAny.middleware.access.canAccess(["customer"]),
         addToCart
     )
-// router.post("/login", globalAny.middleware.authenticated, globalAny.middleware.access.canAccess(["customer"]), addToCart)
+    .put("/remove-item/:productId",
+        globalAny.middleware.authentication,
+        globalAny.middleware.access.canAccess(["customer"]),
+        removeItemFromCart
+    )
+    .put("/clear-cart",
+        globalAny.middleware.authentication,
+        globalAny.middleware.access.canAccess(["customer"]),
+        clearCart
+    )
 
 
 export default router

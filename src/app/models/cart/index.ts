@@ -4,7 +4,7 @@ import afterSave from "./hooks/after-save";
 const globalAny: any = global;
 
 const CartModal = new globalAny.MongooseSchema(fields, {
-    timestamp: true
+    timestamps: true
 });
 
 CartModal.post("save", afterSave);

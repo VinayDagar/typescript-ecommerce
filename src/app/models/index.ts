@@ -5,6 +5,8 @@ import Shop from "./shop";
 import Cart from "./cart";
 import CartProduct from "./cart-product";
 import Wishlist from "./wishlist";
+import Order from "./order"
+import OrderHistory from "./order-history"
 
 export default {
     User,
@@ -14,4 +16,6 @@ export default {
     Cart,
     CartProduct,
     Wishlist,
+    Order,
+    OrderHistory,
 }

@@ -4,7 +4,7 @@ import afterSave from "./hooks/after-save";
 const globalAny: any = global;
 
 const WishlistModal = new globalAny.MongooseSchema(fields, {
-    timestamp: true
+    timestamps: true
 });
 
 WishlistModal.post("save", afterSave);

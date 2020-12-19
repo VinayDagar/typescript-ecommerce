@@ -16,10 +16,12 @@ init.init();
 import commonRoutes from "./config/router/common";
 import productRoutes from "./config/router/product";
 import cartRoutes from "./config/router/cart";
+import orderRoutes from "./config/router/order";
 
 app.use('/api/v1/common', commonRoutes);
 app.use('/api/v1/product', productRoutes);
 app.use('/api/v1/cart', cartRoutes);
+app.use('/api/v1/order', orderRoutes);
 
 app.get('/', (req, res) => res.status(200).send('Server is running'));
 

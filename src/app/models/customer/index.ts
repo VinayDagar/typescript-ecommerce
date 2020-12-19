@@ -4,7 +4,7 @@ import afterSave from "./hooks/after-save";
 const globalAny: any = global
 
 const CustomerModel = new globalAny.MongooseSchema(fields, {
-    timestamp: true
+    timestamps: true
 });
 
 CustomerModel.post('save', afterSave);

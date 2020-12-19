@@ -4,7 +4,7 @@ import fields from "./fields";
 const globalAny: any = global;
 
 const CartProductModal = new globalAny.MongooseSchema(fields, {
-    timestamp: true
+    timestamps: true
 });
 
 /**
